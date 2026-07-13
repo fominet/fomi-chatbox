@@ -9,11 +9,10 @@ services:
 
   rails:
     <<: *base
+    container_name: fomi-chatbox-rails
     depends_on:
       - postgres
       - redis
-    ports:
-      - '127.0.0.1:3000:3000'
     environment:
       - NODE_ENV=production
       - RAILS_ENV=production
@@ -24,6 +23,7 @@ services:
 
   sidekiq:
     <<: *base
+    container_name: fomi-chatbox-sidekiq
     depends_on:
       - postgres
       - redis
@@ -35,10 +35,9 @@ services:
     restart: always
 
   postgres:
+    container_name: fomi-chatbox-postgres
     image: pgvector/pgvector:pg16
     restart: always
-    ports:
-      - '127.0.0.1:5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
@@ -48,14 +47,13 @@ services:
       - POSTGRES_PASSWORD=
 
   redis:
+    container_name: fomi-chatbox-redis
     image: redis:alpine
     restart: always
     command: ["sh", "-c", "redis-server --requirepass \"$REDIS_PASSWORD\""]
     env_file: .env
     volumes:
       - redis_data:/data
-    ports:
-      - '127.0.0.1:6379:6379'
 
 volumes:
   storage_data:

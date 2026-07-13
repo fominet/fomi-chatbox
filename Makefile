@@ -12,7 +12,7 @@ start-db:
 	docker compose -f docker-compose.production.yaml up -d postgres redis
 
 setup:
-	docker compose -f docker-compose.production.yaml run --rm rails bundle exec rails db:create db:migrate
+	docker compose -f docker-compose.production.yaml run --rm rails sh -c "sed -i 's/ActsAsTaggableOn::Taggable::Cache\b/ActsAsTaggableOn::Taggable::CacheKeys/g' /app/db/migrate/*.rb && bundle exec rails db:create db:migrate"
 
 start:
 	docker compose -f docker-compose.production.yaml up -d

@@ -14,7 +14,7 @@ services:
       - postgres
       - redis
     ports:
-      - '127.0.0.1:9999:3000'
+      - '9999:3000'
     environment:
       - NODE_ENV=production
       - RAILS_ENV=production

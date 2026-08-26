@@ -98,6 +98,26 @@ The translation process for Chatwoot web and mobile app is managed at [https://t
 We use the [git-flow](https://nvie.com/posts/a-successful-git-branching-model/) branching model. The base branch is `develop`.
 If you are looking for a stable version, please use the `master` or tags labelled as `v1.x.x`.
 
+---
+
+## ⚠️ Sau khi start lần đầu — BẮT BUỘC chạy lệnh sau để tạo account admin mặc định
+
+```bash
+docker exec fomi-chatbox-rails bundle exec rails runner "
+account = Account.find_or_create_by!(name: 'FOMI Cloud')
+user = User.find_or_initialize_by(email: 'admin@fomiyun.com')
+user.update!(password: 'FomiAdmin2026!', password_confirmation: 'FomiAdmin2026!', name: 'Admin')
+user.confirm unless user.confirmed?
+AccountUser.find_or_create_by!(account: account, user: user, role: 'administrator')
+"
+```
+
+Sau đó đăng nhập tại `http://<server-ip>:3000` với:
+- **Email:** `admin@fomiyun.com`
+- **Password:** `FomiAdmin2026!`
+
+---
+
 ## Deployment
 
 ### Heroku one-click deploy
